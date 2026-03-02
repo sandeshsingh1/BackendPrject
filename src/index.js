@@ -2,25 +2,20 @@ import "dotenv/config";
 import connectDB from "./db/index.js";
 import { app } from "./app.js";
 import uploadOnCloudinary from "./utils/cloudinary.js";
-
 // Optional: test upload once at startup
 const startServer = async () => {
   try {
     // Test upload (remove later in production)
     await uploadOnCloudinary("./test.jpg");
-
     await connectDB();
-
     app.listen(process.env.PORT || 8000, () => {
       console.log(`Server running on port ${process.env.PORT || 8000}`);
     });
-
   } catch (error) {
     console.error("Startup error:", error);
   }
 };
 startServer();
-
 // import { DB_NAME } from "./constants.js";
 // import mongoose from "mongoose"
 // import express from "express"
