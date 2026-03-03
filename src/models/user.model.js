@@ -1,10 +1,9 @@
 import mongoose,{Schema} from "mongoose";
-const userSchema=new Schema
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-
+const userSchema=new Schema
 ({
-  usename:{
+  username:{
     type:String,
     required:true,
     lowercase:true,
@@ -47,11 +46,11 @@ import jwt from "jsonwebtoken"
   type:String
  }
 },{timestamps:true})
-// function use kiyaa hai not callback kyunki hame userScema ka accesss chahiye
-userSchema.pre("save",async function(next){
-  //e br bar save krte time hasing karega jo nhi chhaiye isliye isModified use kro
-  if(!this.isModified("password")) return next();// if  apssword modify nahi hua hai to....
-    this.password=bcrypt.hash(this.password,10)
+// function use kiyaa hai not callback kyunki hame userScema ka accesss chahiye...
+userSchema.pre("save",async function(){
+  //e br bar save krte time hasing karega jo nhi chhaiye isliye isModified use kro  
+  if(!this.isModified("password")) return ;// if  a password modify nahi hua hai to....
+    this.password=await bcrypt.hash(this.password,10)
     next()
 })
 userSchema.methods.isPasswordCorrect=async function(password){
@@ -79,11 +78,10 @@ userSchema.methods.generateRefreshToken= function(){
      username: this.username,
      fullname: this.fullname
    },
-   process.env.Refresh_TOKEN_SECRET,
+   process.env.REFRESH_TOKEN_SECRET,
    {
-     expiresIn: process.env.Refresh_TOKEN_EXPIRY
+     expiresIn: process.env.REFRESH_TOKEN_EXPIRY
    }
- )
+ ) 
 }
-userSchema.methods.generateRefreshToken=function(){}
 export const  User=mongoose.model("User",userSchema);

@@ -1,19 +1,19 @@
 import multer from "multer";
-// const storage=multer.diskStorage(
-//   {
-//        destination:function(req,file,cb){
-//         cb(null,"./public/temp")
-//        },
-//        filename:function(req,file,cb){
-//         cb(null, file.originalname)
-//        }
-//   }
-// )
-// export const upload=multer(
-//   {
-//     storage:storage
-//   }
-// )
+const storage=multer.diskStorage(
+  {
+       destination:function(req,file,cb){
+        cb(null,"./public/temp")
+       },
+       filename:function(req,file,cb){
+        cb(null, file.originalname)
+       }
+  }
+)
+export const upload=multer(
+  {
+    storage:storage
+  }
+)
 // ❌ Problem 1: File Overwrite Risk
 
 // If two users upload:
@@ -35,10 +35,8 @@ import multer from "multer";
 // .js
 
 // malicious scripts
-
 // You should add fileFilter.
 // ❌ Problem 3: No Size Limit
-
 // Someone can upload a 2GB file and crash your server.
 // const storage=multer.diskStorage(
 //   {
