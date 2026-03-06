@@ -1,5 +1,4 @@
 import { application } from "express";
-
 class ApiResponse{
   constructor(statuscode,data=null,message="success")
   {

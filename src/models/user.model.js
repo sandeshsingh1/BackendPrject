@@ -51,7 +51,7 @@ userSchema.pre("save",async function(){
   //e br bar save krte time hasing karega jo nhi chhaiye isliye isModified use kro  
   if(!this.isModified("password")) return ;// if  a password modify nahi hua hai to....
     this.password=await bcrypt.hash(this.password,10)
-    next()
+    //next()
 })
 userSchema.methods.isPasswordCorrect=async function(password){
    return await bcrypt.compare(password,this.password)

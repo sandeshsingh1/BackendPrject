@@ -21,11 +21,12 @@ console.log("email",email);
 //   throw new ApiError(400,"fullname is required")
 // }
 // hadling all fields at once.. whether empty ir not..
-if(
-  [fullname,email,username,password].some((field)=>field.trim()==="")
-)
-{
-   throw new ApiError(400,"All fields are required");
+if (
+  [fullname, email, username, password].some(
+    (field) => typeof field !== "string" || field.trim() === ""
+  )
+) {
+  throw new ApiError(400, "All fields are required");
 }
 //check if username or email exists
 const existingUser=await User.findOne(
@@ -72,5 +73,4 @@ return res.status(201).json(
   new ApiResponse(200,createdUser,"User registered succeessfully")
 )
 })
-
 export default registerUser
