@@ -6,10 +6,10 @@ import uploadOnCloudinary from "./utils/cloudinary.js";
 const startServer = async () => {
   try {
     // Test upload (remove later in production)
-    await uploadOnCloudinary("./test.jpg");
+    // await uploadOnCloudinary("./test.jpg");
     await connectDB();
-    app.listen(process.env.PORT || 8000, () => {
-      console.log(`Server running on port:http://localhost:${process.env.PORT || 8000}`);
+    app.listen(process.env.PORT || 3000, () => {
+      console.log(`Server running on port:http://localhost:${process.env.PORT || 3000}`);
     });
   } catch (error) {
     console.error("Startup error:", error);

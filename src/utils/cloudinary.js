@@ -21,7 +21,7 @@ const uploadOnCloudinary = async (localFilePath) => {
     fs.unlinkSync(localFilePath);
     return response;
   } catch (error) {
-console.error("Cloudinary Upload Error FULL:", error);    return null;
+  console.error("Cloudinary Upload Error FULL:", error);    return null;
   }
 };
 export default uploadOnCloudinary;

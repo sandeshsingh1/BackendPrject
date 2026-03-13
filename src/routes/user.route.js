@@ -1,19 +1,23 @@
 import { Router } from "express";
-import registerUser from "../controllers/user.controller.js";
-import {upload} from "../middlewares/multer.middleware.js"
-const router=Router();
-// register call krne se pehle validate kar lena..
-router.route("/register").post(
+import {registerUser, test} from "../controllers/user.controller.js";
+import { upload } from "../middlewares/multer.middleware.js";
+const router = Router();
+router.post(
+  "/register",
   upload.fields([
-     {
-      name:"avatar",
-      maxcount:1
-     },
-     {
-      name:"coverImage",
-      maxcount:1
-     }
+    { name: "avatar", maxCount: 1 },
+    { name: "coverImage", maxCount: 1 }
   ]),
-  registerUser)
-export default router
+  registerUser
+);
+// user.route.js mein ise change karo:
+// router.post("/register", registerUser); // Bina upload middleware ke
+// router.get("/test", (req, res) => {
+//   res.send("route working");
+// });
+
+// router.post("/register", (req, res) => {
+//   res.send("direct route works");
+// });
+export default router;
 

@@ -15,6 +15,7 @@ const registerUser=asyncHandler(async(req,res)=>{
 // return response..
 //get userinfo from body.. postman se 
 console.log(req.body);
+// console.log(req.files);
 const {username,email,fullname,password}=req.body
 console.log("email",email); 
 // if(fullname===""){
@@ -38,14 +39,19 @@ if(existingUser)
   {
     throw new ApiError(409,"user with email or username exists");
   }
-const avatarLocalPath=req.files?.avatar[0]?.path;
-const coverImageLocalPath=req.files?.coverImage[0]?.path;
+const avatarLocalPath=req.files?.avatar?.[0]?.path;
+const coverImageLocalPath=req.files?.coverImage?.[0]?.path;
+// if cover image not sent this is error
+// TypeError: Cannot read properties of undefined (reading '0')
 // check for avatar it is compulsory..
 if(!avatarLocalPath){
-  throw new ApiError(400,"Avatar is a required field");
+   throw new ApiError(400,"Avatar is a required field");
 }
-const avatar=await uploadOnCloudinary(avatarLocalPath);
-const coverImage=await uploadOnCloudinary(coverImageLocalPath);
+const avatar = await uploadOnCloudinary(avatarLocalPath);
+let coverImage;
+if(coverImageLocalPath) {
+  coverImage = await uploadOnCloudinary(coverImageLocalPath);
+}
  //upload them to cludinary..,avatar
 if (!avatar) {
   throw new ApiError(400,"Avatar is a required field");
@@ -73,4 +79,30 @@ return res.status(201).json(
   new ApiResponse(200,createdUser,"User registered succeessfully")
 )
 })
-export default registerUser
+
+const loginUser=asyncHandler(async(req,res)=>{
+      //  req.body se data lo 
+      //  username or email check kro 
+      // find user from db
+      // password check
+      //acccess and refrwsh token
+      // cookie 
+    const {username,email,password}=req.body;
+   if (!username || !email) {
+     return ApiError(400,"Username and pasword is required");
+   }
+   const user=User.findOne(
+    $or([{username},{password}])
+   )
+   if(!user){
+    return ApiError(404,"user not found");
+   }
+   const ispasswordValid=user.ispasswordCorrect(password)
+      if(!ispasswordValid){
+    return ApiError(401,"user password is wrong");
+   }
+
+
+})
+
+export  {registerUser,loginUser}

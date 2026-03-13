@@ -3,6 +3,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 const userSchema=new Schema
 ({
+
   username:{
     type:String,
     required:true,
@@ -50,12 +51,10 @@ const userSchema=new Schema
 userSchema.pre("save",async function(){
   //e br bar save krte time hasing karega jo nhi chhaiye isliye isModified use kro  
   if(!this.isModified("password")) return ;// if  a password modify nahi hua hai to....
-    this.password=await bcrypt.hash(this.password,10)
+    this.password=await bcrypt.hash(this.password,10)// 10 is salt 
     //next()
 })
-userSchema.methods.isPasswordCorrect=async function(password){
-   return await bcrypt.compare(password,this.password)
-}
+
 userSchema.methods.generateAccessToken= function(){
  return jwt.sign(
    {
@@ -84,4 +83,8 @@ userSchema.methods.generateRefreshToken= function(){
    }
  ) 
 }
+userSchema.methods.isPassworCorrect=  async function (password){
+   return await bcrypt.compare(this.password,password);
+}
+
 export const  User=mongoose.model("User",userSchema);

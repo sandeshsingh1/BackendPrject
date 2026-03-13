@@ -8,7 +8,7 @@
 //     })
 //   }
 // }
-//using promise method 2
+//using promise method 2   
 const asyncHandler = (requestHandler) => {
   return (req, res, next) => {
     Promise
